@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AELAA Accreditation</title>
+<meta name="description" content="AELAA Accreditation: curriculum mapping, CIR report building and the AACSB Q&A Depository for members.">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="area.css">
+<style>
+/* Layout: intro band, then three equal tool cards. */
+.intro{padding-block:40px 28px;display:flex;flex-direction:column;gap:12px}
+.intro h1{font-size:clamp(30px,4vw,42px);font-weight:800;letter-spacing:-.01em}
+.intro p{color:var(--muted);max-width:70ch}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding-bottom:56px}
+.tool{border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:0 0 10px 10px;padding:24px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);background:#fff}
+.tool:hover{background:var(--mist)}
+.tool h2{font-size:21px;font-weight:800}
+.tool p{color:var(--muted);font-size:16px}
+.tool .go{margin-top:auto;font:700 15px/1 var(--display);color:var(--blue);padding-top:8px}
+.tool:hover .go{text-decoration:underline}
+.status{font-size:14.5px;color:var(--muted);border-top:1px solid var(--line);padding-block:18px 40px}
+@media (max-width:860px){.tools{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="https://aelaa.org">
+      <img src="../logo.png" alt="" width="36" height="34">
+      <span><b>AELAA</b><small>Accreditation</small></span>
+    </a>
+    <div class="acct" id="acct" hidden>
+      <span id="acctEmail"></span>
+      <button class="linkbtn" id="btnOut" type="button">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<section class="gate" id="gate"><div class="panel" id="panel" aria-live="polite"><h1>AELAA Accreditation</h1><p>Checking your sign-in…</p></div></section>
+
+<main id="app" hidden>
+  <div class="wrap intro">
+    <span class="eyebrow">Members with an Accreditation donation</span>
+    <h1>Accreditation</h1>
+    <p>Tools for preparing AACSB accreditation: map your curriculum, build your Continuous Improvement Review report, and see how other schools have handled the same questions.</p>
+  </div>
+  <div class="wrap tools">
+    <a class="tool" href="curriculum-mapping/">
+      <span class="eyebrow">Standard 4 and 5</span>
+      <h2>Curriculum Mapping</h2>
+      <p>Map course learning objectives to program competency goals (Introduce, Practice, Master), find coverage gaps, run peer review of course maps, and track Assurance of Learning through Table 5-1.</p>
+      <span class="go">Open Curriculum Mapping →</span>
+    </a>
+    <a class="tool" href="cir-report/">
+      <span class="eyebrow">Continuous Improvement Review</span>
+      <h2>CIR Report</h2>
+      <p>Plan the CIR timeline, draft narratives for every standard, and build Tables 2-1, 3-1, 3-2, 5-1, 8-1 and 9-1, then export a Word draft.</p>
+      <span class="go">Open the CIR Report Builder →</span>
+    </a>
+    <a class="tool" href="../depository/">
+      <span class="eyebrow">Peer answers</span>
+      <h2>AACSB Q&amp;A Depository</h2>
+      <p>Nearly 500 practical accreditation questions with a summary of peers' answers, organized by the 2026 AACSB Global Standards.</p>
+      <span class="go">Open the Q&amp;A Depository →</span>
+    </a>
+  </div>
+  <div class="wrap status" id="status"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="gate.js"></script>
+<script>
+const fmt=iso=>new Date(iso+'T00:00').toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+AELAAGate.start({
+  title:'AELAA Accreditation',
+  onLock:()=>{ document.getElementById('app').hidden=true; },
+  onReady:async(sb,me,api)=>{
+    document.getElementById('app').hidden=false;
+    document.getElementById('acct').hidden=false;
+    document.getElementById('acctEmail').textContent=me.email;
+    document.getElementById('btnOut').onclick=api.signOut;
+    document.getElementById('status').textContent= me.role==='admin' ? 'Signed in as an AELAA admin.'
+      : 'Your Accreditation access runs through '+fmt(me.accred_until)+' and your membership through '+fmt(me.paid_until)+'. Both need to be current.';
+  }
+});
+</script>
+</body>
+</html>
