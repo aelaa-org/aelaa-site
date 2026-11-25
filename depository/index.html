@@ -155,7 +155,7 @@ async function showStd(k){
     const {data,error}=await sb.from('qa_entries').select('id,question,answer').eq('std',k);
     if(current!==k) return;
     v.lastChild.remove();
-    if(error){ v.append(el('p','err','Couldn’t load these questions: '+error.message+'. If your membership or Accreditation access just ended, renew it.')); return; }
+    if(error){ v.append(el('p','err','Couldn’t load these questions. If your membership or Accreditation access just ended, renew it.')); return; }
     cache[k]=data||[];
   }
   renderList(v,cache[k],false);
@@ -182,7 +182,7 @@ async function runSearch(q){
   if(term.length<3){ v.append(el('p','empty','Type at least 3 letters to search.')); return; }
   const like='%'+term+'%';
   const {data,error}=await sb.from('qa_entries').select('id,std,question,answer').or('question.ilike.'+like+',answer.ilike.'+like).limit(60);
-  if(error){ v.append(el('p','err','Search failed: '+error.message)); return; }
+  if(error){ v.append(el('p','err','Search didn’t work. Try again.')); return; }
   renderList(v,data||[],true);
 }
 $('#searchForm').addEventListener('submit',e=>{ e.preventDefault(); const q=$('#q').value.trim(); if(q) runSearch(q); });
@@ -203,7 +203,7 @@ AELAAGate.start({
   onReady:async(client,member,api)=>{
     sb=client; me=member;
     const {data,error}=await sb.rpc('qa_counts');
-    if(error) throw new Error('Couldn’t load the depository: '+error.message);
+    if(error) throw new Error('Couldn’t load the depository. If your Accreditation access just ended, renew it; otherwise reload the page.');
     counts={}; (data||[]).forEach(r=>counts[r.std]=Number(r.n));
     $('#app').hidden=false; $('#acct').hidden=false; $('#acctEmail').textContent=me.email;
     $('#btnOut').onclick=api.signOut;
