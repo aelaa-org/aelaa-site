@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>AELAA Accreditation Q&amp;A Depository</title>
+<title>AACSB Accreditation Q&amp;A Depository</title>
 <meta name="description" content="Members-only collection of practical accreditation questions and answers, organized by AACSB standard.">
 <link rel="icon" type="image/png" href="../logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,7 +96,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-
 #mark{position:fixed;inset:0;pointer-events:none;z-index:15;background-repeat:repeat;opacity:.11}
 @media print{
   body *{display:none!important}
-  body::after{content:"Printing is not available for the AELAA Q&A Depository.";display:block;font:16px/1.5 sans-serif;padding:40px}
+  body::after{content:"Printing is not available for the AACSB Accreditation Q&A Depository.";display:block;font:16px/1.5 sans-serif;padding:40px}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
@@ -106,7 +106,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-
   <div class="wrap bar">
     <a class="brand" href="https://aelaa.org">
       <img src="../logo.png" alt="" width="36" height="34">
-      <span><b>AELAA</b><small>Accreditation Q&amp;A Depository</small></span>
+      <span><b>AELAA</b><small>AACSB Accreditation Q&amp;A Depository</small></span>
     </a>
     <div class="acct" id="acct" hidden>
       <span id="acctEmail"></span>
@@ -116,13 +116,13 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-
 </header>
 
 <section class="gate" id="gate">
-  <div class="panel" id="panel" aria-live="polite"><h1>Q&amp;A Depository</h1><p>Checking your sign-in…</p></div>
+  <div class="panel" id="panel" aria-live="polite"><h1>AACSB Accreditation Q&amp;A Depository</h1><p>Checking your sign-in…</p></div>
 </section>
 
 <main id="app" class="protected" hidden>
   <div class="wrap intro">
     <span class="eyebrow">Members only</span>
-    <h1>Accreditation Q&amp;A Depository</h1>
+    <h1>AACSB (Association to Advance Collegiate Schools of Business) Accreditation Q&amp;A Depository</h1>
     <p>Practical questions business-school colleagues have asked about AACSB accreditation, with a summary of what peers answered. Organized by the 2026 AACSB Global Standards; older discussions that cite previous standard numbers are filed under today's standard.</p>
     <div class="tools">
       <form class="search" id="searchForm" role="search">
@@ -136,7 +136,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-
     <nav class="index" id="index" aria-label="Standards"></nav>
     <section id="view" aria-live="polite"></section>
   </div>
-  <div class="wrap"><p class="disclaim">Summaries are written by AELAA from peer discussions in the AACSB Exchange member community (2014–2026), without participants' names. They describe what colleagues reported doing and are not official AACSB guidance; always confirm against the current AACSB standards and interpretive guidance. For AELAA members' personal use only. Copying, printing or sharing this content is not permitted.</p></div>
+  <div class="wrap"><p class="disclaim">Summaries are written by AELAA from peer discussions in the AACSB Exchange member community (2014–2026), without participants' names. They describe what colleagues reported doing and are not official AACSB guidance, and AELAA is not affiliated with AACSB; always confirm against the current AACSB standards and interpretive guidance. For AELAA members' personal use only. Copying, printing or sharing this content is not permitted.</p></div>
 </main>
 <div id="mark" aria-hidden="true" hidden></div>
 
@@ -182,7 +182,7 @@ function gate(mode,opts){
   const join=()=>{const a=el('a',null,'Join or renew at aelaa.org'); a.href=CONFIG.joinUrl; return a;};
   const back=()=>{const b=el('button','linkbtn','Back to sign in'); b.type='button'; b.onclick=()=>gate('signin'); p.append(b);};
   const outBtn=()=>{const b=el('button','btn ghost','Sign out'); b.type='button'; b.onclick=signOut; p.append(b);};
-  if(mode==='loading'){ h('Q&A Depository'); para('Checking your sign-in…'); return; }
+  if(mode==='loading'){ h('AACSB Accreditation Q&A Depository'); para('Checking your sign-in…'); return; }
   if(mode==='signin'||mode==='reset'||mode==='newpw'){
     const titles={signin:'Members sign in',reset:'Reset your password',newpw:'Choose a new password'};
     h(titles[mode]);
@@ -317,7 +317,7 @@ function renderList(v,rows,isSearch){
   const list=el('div');
   sorted(rows).forEach(r=>{
     const d=el('details','qa');
-    const sm=el('summary'); sm.append(el('h3',null,r.question), el('span','meta',[r.year,r.replies?r.replies+' replies':''].filter(Boolean).join(' · ')));
+    const sm=el('summary'); sm.append(el('h3',null,r.question), el('span','meta',r.year?String(r.year):''));
     const ans=el('div','ans');
     if(isSearch&&r.std) ans.append(el('span','tag',/\d/.test(r.std)?'Standard '+r.std+' · '+BY[r.std].t:BY[r.std].t));
     ans.append(el('p',null,r.answer));
