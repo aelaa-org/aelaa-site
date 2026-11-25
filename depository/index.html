@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AELAA Accreditation Q&amp;A Depository</title>
+<meta name="description" content="Members-only collection of practical accreditation questions and answers, organized by AACSB standard.">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: sticky header; standards index on the left, one standard's questions on the right. */
+:root{
+  --blue:#2347B8; --blue-deep:#16307F; --ink:#14213D; --muted:#4D5872;
+  --paper:#FFFFFF; --mist:#EEF2FB; --line:#D8DEEA; --bad:#B42318; --ok:#1F7A4D;
+  --display:"Libre Franklin","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body)}
+a{color:var(--blue)}
+h1,h2,h3{font-family:var(--display);line-height:1.2;margin:0;text-wrap:balance}
+p{margin:0}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font:600 12.5px/1.4 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px/1 var(--display);padding:13px 18px;border-radius:6px;border:2px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--blue-deep);border-color:var(--blue-deep)}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn.ghost:hover{background:var(--mist)}
+.linkbtn{background:none;border:0;padding:0;color:var(--blue);cursor:pointer;text-decoration:underline;font-size:15px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:16px;min-height:64px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand img{width:36px;height:auto}
+.brand b{font:800 18px/1 var(--display);display:block}
+.brand small{font-size:12.5px;color:var(--muted);display:block;margin-top:3px}
+.acct{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--muted);flex-wrap:wrap}
+
+/* sign-in gate */
+.gate{min-height:calc(100vh - 66px);display:grid;place-items:center;padding:40px 0;background:linear-gradient(180deg,var(--mist),var(--paper))}
+.panel{width:min(440px,100%);background:#fff;border:1px solid var(--line);border-radius:10px;padding:30px;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 50px rgba(35,71,184,.10)}
+.panel h1{font-size:26px;font-weight:800}
+.panel p{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px;font:600 14px/1.3 var(--display)}
+.f input{border:1px solid var(--line);border-radius:6px;padding:11px 12px;font:16px/1.3 var(--body)}
+.err{color:var(--bad);font-size:15px}
+.okmsg{color:var(--ok);font-size:15px}
+.small{font-size:14px;color:var(--muted)}
+
+/* app */
+.intro{padding-block:32px 22px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.intro h1{font-size:clamp(28px,3.6vw,38px);font-weight:800;letter-spacing:-.01em}
+.intro p{color:var(--muted);max-width:75ch}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.search{flex:1 1 320px;display:flex;gap:8px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:11px 12px;font:16px/1.3 var(--body)}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:36px;padding-block:28px 60px}
+.index{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 100px);overflow:auto;display:flex;flex-direction:column;gap:18px}
+.group h2{font:700 12.5px/1.4 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.std{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:7px 8px;border-radius:0 6px 6px 0;cursor:pointer;font-size:15.5px;line-height:1.3}
+.std:hover{background:var(--mist)}
+.std[aria-current="true"]{background:var(--mist);border-left-color:var(--blue);font-weight:600}
+.std .num{font:800 14px/1.3 var(--display);color:var(--blue)}
+.std .n{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stdhead{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.stdhead h2{font-size:clamp(22px,2.6vw,28px);font-weight:800}
+.stdhead p{color:var(--muted);max-width:72ch}
+.listbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;font-size:14.5px;color:var(--muted)}
+.listbar select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:#fff}
+.qa{border-top:1px solid var(--line)}
+.qa:last-child{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;cursor:pointer;padding:16px 4px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary h3{font:700 17px/1.35 var(--display)}
+.qa summary .meta{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.qa summary:hover h3{color:var(--blue)}
+.qa .ans{padding:0 4px 20px;max-width:75ch}
+.qa .tag{display:inline-block;font:600 12px/1 var(--display);color:var(--blue);background:var(--mist);border-radius:4px;padding:4px 7px;margin-bottom:8px}
+.empty{padding:28px 0;color:var(--muted)}
+.disclaim{font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;margin-top:28px;max-width:80ch}
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .index{position:static;max-height:none}
+  .brand small{display:none}
+}
+
+/* copy protection: no selection, no callout, no printing */
+.protected{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#mark{position:fixed;inset:0;pointer-events:none;z-index:15;background-repeat:repeat;opacity:.11}
+@media print{
+  body *{display:none!important}
+  body::after{content:"Printing is not available for the AELAA Q&A Depository.";display:block;font:16px/1.5 sans-serif;padding:40px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="https://aelaa.org">
+      <img src="../logo.png" alt="" width="36" height="34">
+      <span><b>AELAA</b><small>Accreditation Q&amp;A Depository</small></span>
+    </a>
+    <div class="acct" id="acct" hidden>
+      <span id="acctEmail"></span>
+      <button class="linkbtn" id="btnOut" type="button">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<section class="gate" id="gate">
+  <div class="panel" id="panel" aria-live="polite"><h1>Q&amp;A Depository</h1><p>Checking your sign-in…</p></div>
+</section>
+
+<main id="app" class="protected" hidden>
+  <div class="wrap intro">
+    <span class="eyebrow">Members only</span>
+    <h1>Accreditation Q&amp;A Depository</h1>
+    <p>Practical questions business-school colleagues have asked about AACSB accreditation, with a summary of what peers answered. Organized by the 2026 AACSB Global Standards; older discussions that cite previous standard numbers are filed under today's standard.</p>
+    <div class="tools">
+      <form class="search" id="searchForm" role="search">
+        <label for="q" class="sr" hidden>Search all questions</label>
+        <input id="q" type="search" placeholder="Search all questions, e.g. indirect measures, SA criteria" autocomplete="off" aria-label="Search all questions">
+        <button class="btn" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+  <div class="wrap layout">
+    <nav class="index" id="index" aria-label="Standards"></nav>
+    <section id="view" aria-live="polite"></section>
+  </div>
+  <div class="wrap"><p class="disclaim">Summaries are written by AELAA from peer discussions in the AACSB Exchange member community (2014–2026), without participants' names. They describe what colleagues reported doing and are not official AACSB guidance; always confirm against the current AACSB standards and interpretive guidance. For AELAA members' personal use only. Copying, printing or sharing this content is not permitted.</p></div>
+</main>
+<div id="mark" aria-hidden="true" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+'use strict';
+const CONFIG={
+  supabaseUrl:'https://klovxeutlqrsgdrbkgpm.supabase.co',
+  supabaseAnonKey:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtsb3Z4ZXV0bHFyc2dkcmJrZ3BtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUyOTk2MjMsImV4cCI6MjExMDg3NTYyM30.pArb7kEohW1QOIliudpComam0G4j9BvZQKmigJFGvcQ',
+  joinUrl:'https://aelaa.org/#membership',
+  graderUrl:'https://grader.aelaa.org'
+};
+const STANDARDS=[
+  {group:'Strategic Management',items:[
+    {k:'1',t:'Strategic Planning',d:'Mission, strategic plans and KPIs, risk analysis, advisory boards, governance and school structure.'},
+    {k:'2',t:'Physical, Digital, and Financial Resources',d:'Facilities, trading labs, classroom technology, devices, budgets and funding models.'},
+    {k:'3',t:'Faculty and Professional Staff Resources',d:'Faculty qualifications (SA, PA, SP, IP), sufficiency and deployment, Table 3-1 (formerly Standard 15 and Table 15-1), workloads, hiring, development and staffing.'}]},
+  {group:'Learner Success',items:[
+    {k:'4',t:'Curriculum',d:'Curriculum design and renewal, core courses, analytics and AI, experiential learning, online and hybrid formats.'},
+    {k:'5',t:'Assurance of Learning',d:'Learning goals, rubrics, direct and indirect measures, closing the loop, Table 5-1, exit exams and AoL tools.'},
+    {k:'6',t:'Learner Progression',d:'Admissions, transfer credit, advising, career readiness, student success and post-graduation outcomes.'}]},
+  {group:'Pathways to Impact',items:[
+    {k:'7',t:'Teaching Effectiveness and Impact',d:'Evaluating and developing teaching, online teaching practice, academic integrity and generative AI.'},
+    {k:'8',t:'Impact of Scholarship',d:'Intellectual contributions, journal lists, predatory journals, research impact and Table 8-1 (formerly Table 2-1).'},
+    {k:'9',t:'Societal Impact and Engagement',d:'Societal impact focus areas, the SDGs, sustainability, ethics and responsible business, engagement and innovation.'}]},
+  {group:'Beyond the standards',items:[
+    {k:'P',t:'Accreditation Process and Reporting',d:'Eligibility, iSER, CIR reports, peer review team visits, base rooms, accreditation staffing and data software.'},
+    {k:'G',t:'General and Community',d:'The value and ROI of accreditation, rankings, partnerships and community topics.'}]}
+];
+const BY={}; STANDARDS.forEach(g=>g.items.forEach(s=>BY[s.k]=s));
+const $=s=>document.querySelector(s);
+const el=(tag,cls,text)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e;};
+let sb=null, me=null, counts={}, current=null, cache={}, sortBy='replies';
+
+/* ---------- sign-in gate ---------- */
+function gate(mode,opts){
+  opts=opts||{};
+  $('#app').hidden=true; $('#mark').hidden=true; $('#gate').hidden=false;
+  const p=$('#panel'); p.replaceChildren();
+  const h=t=>p.append(el('h1',null,t));
+  const para=(t,c)=>{const x=el('p',c,t); p.append(x); return x;};
+  const join=()=>{const a=el('a',null,'Join or renew at aelaa.org'); a.href=CONFIG.joinUrl; return a;};
+  const back=()=>{const b=el('button','linkbtn','Back to sign in'); b.type='button'; b.onclick=()=>gate('signin'); p.append(b);};
+  const outBtn=()=>{const b=el('button','btn ghost','Sign out'); b.type='button'; b.onclick=signOut; p.append(b);};
+  if(mode==='loading'){ h('Q&A Depository'); para('Checking your sign-in…'); return; }
+  if(mode==='signin'||mode==='reset'||mode==='newpw'){
+    const titles={signin:'Members sign in',reset:'Reset your password',newpw:'Choose a new password'};
+    h(titles[mode]);
+    if(mode==='signin') para('Use the same email and password as your AELAA Grader account.');
+    const f=el('form','stack'); f.noValidate=false;
+    const field=(label,id,type,ac)=>{const l=el('label','f',label); const i=el('input'); i.id=id; i.type=type; i.required=true; i.autocomplete=ac; if(type==='password'&&mode==='newpw') i.minLength=8; l.append(i); f.append(l); return i;};
+    let em,pw,pw2;
+    if(mode!=='newpw') em=field('Email','gEmail','email','email');
+    if(mode==='signin') pw=field('Password','gPw','password','current-password');
+    if(mode==='newpw'){ pw=field('New password (at least 8 characters)','gPw','password','new-password'); pw2=field('Confirm new password','gPw2','password','new-password'); }
+    if(em&&opts.email) em.value=opts.email;
+    if(opts.err) f.append(el('p','err',opts.err));
+    if(opts.ok) f.append(el('p','okmsg',opts.ok));
+    const sub=el('button','btn',{signin:'Sign in',reset:'Email me a reset link',newpw:'Save new password'}[mode]); sub.type='submit'; f.append(sub);
+    f.onsubmit=async e=>{
+      e.preventDefault(); sub.disabled=true;
+      const email=em?em.value.trim().toLowerCase():'';
+      try{
+        if(mode==='signin'){ const {data,error}=await sb.auth.signInWithPassword({email,password:pw.value}); if(error) throw error; await afterSignIn(data.user); return; }
+        if(mode==='reset'){ const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname}); if(error) throw error;
+          gate('message',{title:'Check your email',text:'If '+email+' has an account, a password reset link is on its way. Open it on this device to choose a new password.'}); return; }
+        if(mode==='newpw'){ if(pw.value!==pw2.value) throw new Error('The two passwords don’t match.');
+          const {data,error}=await sb.auth.updateUser({password:pw.value}); if(error) throw error; await afterSignIn(data.user); return; }
+      }catch(err){ gate(mode,{email,err:authError(err)}); }
+    };
+    p.append(f);
+    if(mode==='signin'){
+      const r=el('button','linkbtn','Forgot your password?'); r.type='button'; r.onclick=()=>gate('reset',{email:em.value}); p.append(r);
+      const n=el('p','small','No account yet? Create one on the '); const a=el('a',null,'AELAA Grader'); a.href=CONFIG.graderUrl; n.append(a,' with the email on your membership, then sign in here.'); p.append(n);
+      const j=el('p','small','Not a member? '); j.append(join(),'.'); p.append(j);
+    } else back();
+    const first=p.querySelector('input'); if(first&&!first.value) first.focus();
+    return;
+  }
+  if(mode==='message'){ h(opts.title); para(opts.text); back(); return; }
+  if(mode==='notmember'){ h('Not on the member list'); para(me.email+' isn’t on the AELAA member list, so it can’t open the depository. Sign in with the email on your membership, or join AELAA.'); const j=el('p'); j.append(join()); p.append(j); outBtn(); return; }
+  if(mode==='expired'){ h('Membership has ended'); para('The AELAA membership for '+me.email+(me.paid_until?' ended on '+fmtDate(me.paid_until):' has no paid-through date')+'. Renew to open the depository again.'); const j=el('p'); j.append(join()); p.append(j); outBtn(); return; }
+  if(mode==='error'){ h('Can’t reach the sign-in service'); if(opts.err) para(opts.err,'err'); para('Check your internet connection and reload the page.'); if(me) outBtn(); return; }
+}
+function authError(e){
+  const m=String(e&&e.message||e||'');
+  if(/Invalid login credentials/i.test(m)) return 'That email and password don’t match. Try again or reset your password.';
+  if(/Email not confirmed/i.test(m)) return 'Confirm your email first: open the link sent when you created your account.';
+  if(/rate limit|too many/i.test(m)) return 'Too many attempts just now. Wait a few minutes and try again.';
+  return m||'Something went wrong. Try again.';
+}
+function fmtDate(iso){ return new Date(iso+'T00:00').toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}); }
+function todayISO(){ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+async function signOut(){ try{ await sb.auth.signOut(); }catch(e){} cache={}; location.hash=''; location.reload(); }
+
+async function afterSignIn(user){
+  if(!user) return gate('signin');
+  const email=String(user.email||'').toLowerCase();
+  me={email};
+  const res=await sb.from('members').select('email,paid_until,role').eq('email',email).maybeSingle();
+  if(res.error) return gate('error',{err:'Couldn’t check your membership: '+res.error.message});
+  if(!res.data) return gate('notmember');
+  me=Object.assign({},res.data,{email});
+  if(me.role!=='admin'&&(!me.paid_until||me.paid_until<todayISO())) return gate('expired');
+  await openApp();
+}
+
+/* ---------- the depository ---------- */
+async function openApp(){
+  const {data,error}=await sb.rpc('qa_counts');
+  if(error) return gate('error',{err:'Couldn’t load the depository: '+error.message});
+  counts={}; (data||[]).forEach(r=>counts[r.std]=Number(r.n));
+  $('#gate').hidden=true; $('#app').hidden=false;
+  $('#acct').hidden=false; $('#acctEmail').textContent=me.email;
+  watermark(); renderIndex();
+  route();
+}
+function watermark(){
+  const text=me.email+' · AELAA members only · '+todayISO();
+  const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="460" height="230"><text x="20" y="130" transform="rotate(-24 230 115)" font-family="Arial,sans-serif" font-size="15" fill="#14213D">'+esc(text)+'</text></svg>';
+  const m=$('#mark'); m.style.backgroundImage='url("data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)+'")'; m.hidden=false;
+}
+function renderIndex(){
+  const nav=$('#index'); nav.replaceChildren();
+  STANDARDS.forEach(g=>{
+    const box=el('div','group'); box.append(el('h2',null,g.group));
+    g.items.forEach(s=>{
+      const b=el('button','std'); b.type='button'; b.dataset.k=s.k;
+      b.append(el('span','num',/\d/.test(s.k)?s.k:'•'), el('span',null,s.t), el('span','n',String(counts[s.k]||0)));
+      b.onclick=()=>{ location.hash='std-'+s.k; if(matchMedia('(max-width:860px)').matches) $('#view').scrollIntoView({block:'start'}); };
+      box.append(b);
+    });
+    nav.append(box);
+  });
+}
+function markCurrent(){ document.querySelectorAll('.std').forEach(b=>b.setAttribute('aria-current',String(b.dataset.k===current))); }
+function route(){
+  const m=/^#std-([1-9PG])$/.exec(location.hash);
+  showStd(m?m[1]:'5');
+}
+window.addEventListener('hashchange',()=>{ if(!$('#app').hidden) route(); });
+
+async function showStd(k){
+  current=k; markCurrent();
+  const s=BY[k], v=$('#view'); v.replaceChildren();
+  const head=el('div','stdhead');
+  head.append(el('span','eyebrow',/\d/.test(k)?'Standard '+k:'Beyond the standards'), el('h2',null,s.t), el('p',null,s.d));
+  v.append(head);
+  if(!cache[k]){
+    v.append(el('p','empty','Loading questions…'));
+    const {data,error}=await sb.from('qa_entries').select('id,question,answer,year,replies').eq('std',k);
+    if(current!==k) return;
+    v.lastChild.remove();
+    if(error){ v.append(el('p','err','Couldn’t load these questions: '+error.message+'. If your membership just ended, renew at aelaa.org.')); return; }
+    cache[k]=data||[];
+  }
+  renderList(v,cache[k],false);
+}
+function sorted(rows){
+  const r=rows.slice();
+  if(sortBy==='newest') r.sort((a,b)=>(b.year||0)-(a.year||0)||b.replies-a.replies);
+  else if(sortBy==='az') r.sort((a,b)=>a.question.localeCompare(b.question));
+  else r.sort((a,b)=>b.replies-a.replies||(b.year||0)-(a.year||0));
+  return r;
+}
+function renderList(v,rows,isSearch){
+  const bar=el('div','listbar');
+  bar.append(el('span',null,rows.length+(rows.length===1?' question':' questions')));
+  const lab=el('label',null,'Sort by ');
+  const sel=el('select'); sel.id='sortBy';
+  [['replies','Most discussed'],['newest','Newest'],['az','A to Z']].forEach(([val,t])=>{const o=el('option',null,t); o.value=val; sel.append(o);});
+  sel.value=sortBy; sel.onchange=()=>{ sortBy=sel.value; if(isSearch) runSearch(lastQuery); else showStd(current); };
+  lab.append(sel); bar.append(lab);
+  v.append(bar);
+  if(!rows.length){ v.append(el('p','empty',isSearch?'No questions match that search. Try a shorter phrase.':'No questions here yet.')); return; }
+  const list=el('div');
+  sorted(rows).forEach(r=>{
+    const d=el('details','qa');
+    const sm=el('summary'); sm.append(el('h3',null,r.question), el('span','meta',[r.year,r.replies?r.replies+' replies':''].filter(Boolean).join(' · ')));
+    const ans=el('div','ans');
+    if(isSearch&&r.std) ans.append(el('span','tag',/\d/.test(r.std)?'Standard '+r.std+' · '+BY[r.std].t:BY[r.std].t));
+    ans.append(el('p',null,r.answer));
+    d.append(sm,ans); list.append(d);
+  });
+  v.append(list);
+}
+let lastQuery='';
+async function runSearch(q){
+  lastQuery=q; current=null; markCurrent();
+  const v=$('#view'); v.replaceChildren();
+  const head=el('div','stdhead'); head.append(el('span','eyebrow','Search'), el('h2',null,'Results for “'+q+'”')); v.append(head);
+  const term=q.replace(/[%_,().*\\]/g,' ').trim();
+  if(term.length<3){ v.append(el('p','empty','Type at least 3 letters to search.')); return; }
+  const like='%'+term+'%';
+  const {data,error}=await sb.from('qa_entries').select('id,std,question,answer,year,replies').or('question.ilike.'+like+',answer.ilike.'+like).limit(60);
+  if(error){ v.append(el('p','err','Search failed: '+error.message)); return; }
+  renderList(v,data||[],true);
+}
+$('#searchForm').addEventListener('submit',e=>{ e.preventDefault(); const q=$('#q').value.trim(); if(q) runSearch(q); });
+$('#btnOut').addEventListener('click',signOut);
+
+/* ---------- copy protection (deterrent; screenshots can't be blocked) ---------- */
+const inApp=t=>t&&t.closest&&t.closest('#app')&&!t.closest('input,select,textarea');
+['copy','cut','contextmenu','dragstart','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{ if(inApp(e.target)) e.preventDefault(); }));
+document.addEventListener('keydown',e=>{
+  const k=(e.key||'').toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&['c','x','a','s','p','u'].includes(k)&&!(e.target.closest&&e.target.closest('input'))){ e.preventDefault(); }
+  if((e.ctrlKey||e.metaKey)&&k==='p') e.preventDefault();
+});
+window.addEventListener('beforeprint',()=>{ document.body.style.visibility='hidden'; });
+window.addEventListener('afterprint',()=>{ document.body.style.visibility=''; });
+
+/* ---------- start ---------- */
+(async function init(){
+  if(!window.supabase) return gate('error',{err:'The sign-in service didn’t load.'});
+  sb=window.supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseAnonKey);
+  gate('loading');
+  let recovering=false;
+  sb.auth.onAuthStateChange(ev=>{ if(ev==='PASSWORD_RECOVERY'){ recovering=true; setTimeout(()=>gate('newpw'),0); } });
+  let session=null;
+  try{ ({data:{session}}=await sb.auth.getSession()); }catch(err){ return gate('error',{err:String(err.message||err)}); }
+  if(recovering) return;
+  if(session) await afterSignIn(session.user); else gate('signin');
+})();
+})();
+</script>
+</body>
+</html>
