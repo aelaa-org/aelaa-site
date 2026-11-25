@@ -89,7 +89,8 @@ function authError(e){
   if(/Invalid login credentials/i.test(m)) return 'That email and password don’t match. Try again or reset your password.';
   if(/Email not confirmed/i.test(m)) return 'Confirm your email first: open the link sent when you created your account.';
   if(/rate limit|too many/i.test(m)) return 'Too many attempts just now. Wait a few minutes and try again.';
-  return m||'Something went wrong. Try again.';
+  if(/password/i.test(m)) return 'Choose a longer, harder-to-guess password (at least 8 characters).';
+  return 'Something went wrong. Try again.';
 }
 async function signOut(){ try{ await sb.auth.signOut(); }catch(e){} location.reload(); }
 
@@ -98,7 +99,7 @@ async function check(user){
   const email=String(user.email||'').toLowerCase();
   me={email};
   const res=await sb.from('members').select('email,paid_until,accred_until,role').eq('email',email).maybeSingle();
-  if(res.error) return show('error',{err:'Couldn’t check your membership: '+res.error.message});
+  if(res.error) return show('error',{err:'Couldn’t check your membership.'});
   if(!res.data) return show('notmember');
   me=Object.assign({},res.data,{email});
   const t=todayISO();
@@ -108,21 +109,32 @@ async function check(user){
   }
   $('#gate').hidden=true;
   try{ await opts.onReady(sb,me,{signOut}); }
-  catch(err){ show('error',{err:String(err&&err.message||err)}); }
+  catch(err){ show('error',{err:'Something went wrong. Try again.'}); }
+}
+
+// Copyright line and Terms of Use link at the bottom of every Accreditation page.
+function legalFooter(){
+  if(document.querySelector('.aelaa-legal')) return;
+  const f=document.createElement('footer'); f.className='aelaa-legal';
+  f.style.cssText='max-width:1100px;margin:32px auto 24px;padding:0 20px;text-align:center;font:12.5px/1.5 system-ui,sans-serif;color:#5b6478';
+  f.innerHTML='© 2026 Alliance of Educators for Learning, Assessment &amp; Accreditation (AELAA). All rights reserved. · <a href="/terms/" style="color:inherit">Terms of Use</a>';
+  document.body.append(f);
 }
 
 window.AELAAGate={
   config:CONFIG,
   signOut:()=>signOut(),
+  footer:legalFooter,
   async start(o){
     opts=o||{};
+    legalFooter();
     if(!window.supabase) return show('error',{err:'The sign-in service didn’t load.'});
     sb=window.supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseAnonKey);
     show('loading');
     let recovering=false;
     sb.auth.onAuthStateChange(ev=>{ if(ev==='PASSWORD_RECOVERY'){ recovering=true; setTimeout(()=>show('newpw'),0); } });
     let session=null;
-    try{ ({data:{session}}=await sb.auth.getSession()); }catch(err){ return show('error',{err:String(err.message||err)}); }
+    try{ ({data:{session}}=await sb.auth.getSession()); }catch(err){ return show('error',{err:'The sign-in service didn’t respond.'}); }
     if(recovering) return;
     if(session) await check(session.user); else show('signin');
   }

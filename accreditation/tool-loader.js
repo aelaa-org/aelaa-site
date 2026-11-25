@@ -7,7 +7,7 @@
 const BUCKET='accreditation-tools';
 async function fetchText(sb,path){
   const {data,error}=await sb.storage.from(BUCKET).download(path);
-  if(error) throw new Error('Couldn’t load '+path+' ('+(error.message||'storage error')+'). If your Accreditation access just ended, renew it.');
+  if(error) throw new Error('Couldn’t open this tool. If your Accreditation access just ended, renew it; otherwise reload the page.');
   return await data.text();
 }
 window.AELAATool={
@@ -30,6 +30,7 @@ window.AELAATool={
           actions.append(out);
         }
         for(const src of scripts){ const s=document.createElement('script'); s.textContent=src; document.body.append(s); }
+        AELAAGate.footer();
       }
     });
   }
