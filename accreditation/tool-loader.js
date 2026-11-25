@@ -30,7 +30,7 @@ window.AELAATool={
           actions.append(out);
         }
         for(const src of scripts){ const s=document.createElement('script'); s.textContent=src; document.body.append(s); }
-        AELAAGate.footer();
+        if(AELAAGate.footer) AELAAGate.footer();
       }
     });
   }
