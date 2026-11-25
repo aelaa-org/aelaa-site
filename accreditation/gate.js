@@ -109,7 +109,7 @@ async function check(user){
   }
   $('#gate').hidden=true;
   try{ await opts.onReady(sb,me,{signOut}); }
-  catch(err){ show('error',{err:'Something went wrong. Try again.'}); }
+  catch(err){ const m=String(err&&err.message||''); show('error',{err:/^(Couldn’t open|This account)/.test(m)?m:'Something went wrong. Try again.'}); }
 }
 
 // Copyright line and Terms of Use link at the bottom of every Accreditation page.
