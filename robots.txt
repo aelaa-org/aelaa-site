@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /accreditation/
+Disallow: /depository/
+
+# Automated scraping or copying of AELAA content is not permitted. See https://aelaa.org/terms/
