@@ -14,9 +14,9 @@ const CONFIG={
   supabaseAnonKey:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtsb3Z4ZXV0bHFyc2dkcmJrZ3BtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUyOTk2MjMsImV4cCI6MjExMDg3NTYyM30.pArb7kEohW1QOIliudpComam0G4j9BvZQKmigJFGvcQ',
   joinUrl:'https://aelaa.org/#membership',
   graderUrl:'https://grader.aelaa.org',
-  // Paste the public link of the $500 Accreditation donation form on Zeffy here.
-  // While it is empty, visitors are asked to email AELAA instead.
-  donateUrl:'',
+  // The public link of the $500 Accreditation donation form on Zeffy ("AELAA Accreditation").
+  // If it is ever emptied, visitors are asked to email AELAA instead.
+  donateUrl:'https://www.zeffy.com/en-US/donation-form/aelaa-accreditation',
   contactEmail:'contactaelaa@gmail.com',
   donation:'$500'
 };
