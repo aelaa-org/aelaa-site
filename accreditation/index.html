@@ -45,7 +45,7 @@
 
 <main id="app" hidden>
   <div class="wrap intro">
-    <span class="eyebrow">Members with an Accreditation donation</span>
+    <span class="eyebrow">Premium members</span>
     <h1>Accreditation</h1>
     <p>Tools for preparing AACSB accreditation: map your curriculum, build your Continuous Improvement Review report, and see how other schools have handled the same questions.</p>
   </div>
@@ -85,7 +85,7 @@ AELAAGate.start({
     document.getElementById('acctEmail').textContent=me.email;
     document.getElementById('btnOut').onclick=api.signOut;
     document.getElementById('status').textContent= me.role==='admin' ? 'Signed in as an AELAA admin.'
-      : 'Your Accreditation access runs through '+fmt(me.accred_until)+' and your membership through '+fmt(me.paid_until)+'. Both need to be current.';
+      : 'Your Premium membership runs through '+fmt(me.level==='premium'||!me.accred_until||me.accred_until>me.paid_until?me.paid_until:me.accred_until)+'.';
   }
 });
 </script>

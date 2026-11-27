@@ -1,7 +1,8 @@
 /* AELAA Accreditation gate: shared sign-in and access check for every page in the Accreditation area.
-   Access = signed in + on the member list + membership paid through today or later
-            + $500 Accreditation donation paid through today or later (admins always pass).
-   The database enforces the same rule (has_accreditation() in aelaa-setup/accreditation.sql);
+   Access = signed in + on the member list + not suspended + Premium membership ($500/year) paid
+            through today or later (admins always pass). An earlier $500 Accreditation donation
+            with a current accred_until also counts, on top of a current membership.
+   The database enforces the same rule (has_accreditation() in aelaa-setup/membership-levels.sql);
    this file only decides what the visitor sees.
 
    Page requirements: <section id="gate"><div id="panel"></div></section> somewhere in the body,
@@ -14,11 +15,11 @@ const CONFIG={
   supabaseAnonKey:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtsb3Z4ZXV0bHFyc2dkcmJrZ3BtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUyOTk2MjMsImV4cCI6MjExMDg3NTYyM30.pArb7kEohW1QOIliudpComam0G4j9BvZQKmigJFGvcQ',
   joinUrl:'https://aelaa.org/#membership',
   graderUrl:'https://grader.aelaa.org',
-  // The public link of the $500 Accreditation donation form on Zeffy ("AELAA Accreditation").
-  // If it is ever emptied, visitors are asked to email AELAA instead.
+  // Where to pay for Premium. The "AELAA Accreditation" form on Zeffy: $500 there now buys the
+  // Premium membership. If it is ever emptied, visitors are asked to email AELAA instead.
   donateUrl:'https://www.zeffy.com/en-US/donation-form/aelaa-accreditation',
   contactEmail:'contactaelaa@gmail.com',
-  donation:'$500'
+  premium:'$500'
 };
 let sb=null, me=null, opts={};
 const $=s=>document.querySelector(s);
@@ -39,7 +40,7 @@ function show(mode,o){
   if(mode==='loading'){ h(opts.title||'AELAA Accreditation'); para('Checking your sign-in…'); return; }
   if(mode==='signin'||mode==='reset'||mode==='newpw'){
     h({signin:opts.title||'AELAA Accreditation',reset:'Reset your password',newpw:'Choose a new password'}[mode]);
-    if(mode==='signin') para('For AELAA members with an Accreditation donation. Sign in with the same email and password as your AELAA Grader account.');
+    if(mode==='signin') para('For AELAA Premium members. Sign in with the same email and password as your AELAA Grader account.');
     const f=el('form','stack');
     const field=(label,id,type,ac)=>{const l=el('label','f',label); const i=el('input'); i.id=id; i.type=type; i.required=true; i.autocomplete=ac; if(mode==='newpw') i.minLength=8; l.append(i); f.append(l); return i;};
     let em,pw,pw2;
@@ -69,17 +70,19 @@ function show(mode,o){
     return;
   }
   if(mode==='message'){ h(o.title); para(o.text); back(); return; }
-  if(mode==='notmember'){ h('Not on the member list'); para(me.email+' isn’t on the AELAA member list. The Accreditation area is for AELAA members who have also made an Accreditation donation.'); const j=el('p'); j.append(link('Join AELAA',CONFIG.joinUrl)); p.append(j); outBtn(); return; }
+  if(mode==='notmember'){ h('Not on the member list'); para(me.email+' isn’t on the AELAA member list. The Accreditation area is for AELAA Premium members ('+CONFIG.premium+' a year).'); const j=el('p'); j.append(link('Join AELAA',CONFIG.joinUrl)); p.append(j); outBtn(); return; }
   if(mode==='expired'){ h('Membership has ended'); para('The AELAA membership for '+me.email+(me.paid_until?' ended on '+fmtDate(me.paid_until):' has no paid-through date')+'. Renew your membership to use the Accreditation area.'); const j=el('p'); j.append(link('Renew at aelaa.org',CONFIG.joinUrl)); p.append(j); outBtn(); return; }
+  if(mode==='suspended'){ h('Account suspended'); para('AELAA has suspended access for '+me.email+'. To find out why or to restore it, email '+CONFIG.contactEmail+'.'); outBtn(); return; }
   if(mode==='nodonation'){
-    h('Accreditation donation needed');
-    const lapsed=me.accred_until?'Your Accreditation access ended on '+fmtDate(me.accred_until)+'. ':'';
-    para(lapsed+'The Accreditation area (Curriculum Mapping, CIR Report Builder and the AACSB Q&A Depository) is open to AELAA members who make a '+CONFIG.donation+' donation, which gives one year of access. Access usually starts within a few minutes of donating.');
+    h('Premium membership needed');
+    const lvl={basic:'Basic',standard:'Standard'}[me.level];
+    const now=me.trial?'You are on the free trial, which covers the Grader and Oral Exams. ':lvl?'Your '+lvl+' membership doesn’t include Accreditation. ':'';
+    para(now+'The Accreditation area (Curriculum Mapping, CIR Report Builder and the AACSB Q&A Depository) is part of the Premium membership: '+CONFIG.premium+' a year, which also covers the AELAA Grader and Oral Exams. Access usually starts within a few minutes of paying.');
     const j=el('p');
-    if(CONFIG.donateUrl){ const a=link('Donate '+CONFIG.donation+' on Zeffy',CONFIG.donateUrl); a.className='btn'; j.append(a); }
+    if(CONFIG.donateUrl){ const a=link('Get Premium ('+CONFIG.premium+'/year) on Zeffy',CONFIG.donateUrl); a.className='btn'; j.append(a); }
     else { j.append('To donate, email ',el('b',null,CONFIG.contactEmail),'.'); }
     p.append(j);
-    para('Use the same email address as your membership ('+me.email+') so the donation is matched to your account.','small');
+    para('Use the same email address as your account ('+me.email+') so the payment is matched to it.','small');
     outBtn(); return;
   }
   if(mode==='error'){ h('Can’t reach the sign-in service'); if(o.err) para(o.err,'err'); para('Check your internet connection and reload the page.'); if(me) outBtn(); return; }
@@ -98,14 +101,18 @@ async function check(user){
   if(!user) return show('signin');
   const email=String(user.email||'').toLowerCase();
   me={email};
-  const res=await sb.from('members').select('email,paid_until,accred_until,role').eq('email',email).maybeSingle();
+  const res=await sb.from('members').select('email,paid_until,accred_until,role,level,suspended,trial_ends_at').eq('email',email).maybeSingle();
   if(res.error) return show('error',{err:'Couldn’t check your membership.'});
   if(!res.data) return show('notmember');
   me=Object.assign({},res.data,{email});
   const t=todayISO();
   if(me.role!=='admin'){
-    if(!me.paid_until||me.paid_until<t) return show('expired');
-    if(!me.accred_until||me.accred_until<t) return show('nodonation');
+    if(me.suspended) return show('suspended');
+    const paid=me.paid_until&&me.paid_until>=t;
+    me.trial=!paid&&me.trial_ends_at&&new Date(me.trial_ends_at)>new Date();
+    if(!paid&&!me.trial) return show('expired');
+    const legacy=me.accred_until&&me.accred_until>=t;
+    if(!(paid&&(me.level==='premium'||legacy))) return show('nodonation');
   }
   $('#gate').hidden=true;
   try{ await opts.onReady(sb,me,{signOut}); }
