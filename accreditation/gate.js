@@ -3,7 +3,8 @@
             through today or later (admins always pass). An earlier $500 Accreditation donation
             with a current accred_until also counts, on top of a current membership. A seat at an
             institution with a current Premium membership counts too, and so does a paying member's
-            one free week of Premium (upgrade_level/upgrade_ends_at, see upgrade-trial.sql).
+            one free week of Premium (upgrade_level/upgrade_ends_at, see upgrade-trial.sql). That week
+            is approved and started by an AELAA admin for Standard members who ask.
    The database enforces the same rule (has_accreditation() in aelaa-setup/membership-levels.sql);
    this file only decides what the visitor sees.
 
@@ -23,7 +24,7 @@ const CONFIG={
   contactEmail:'contactaelaa@gmail.com',
   premium:'$500'
 };
-let sb=null, me=null, opts={}, curUser=null;
+let sb=null, me=null, opts={};
 const $=s=>document.querySelector(s);
 const el=(tag,cls,text)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e;};
 const todayISO=()=>{ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
@@ -87,18 +88,10 @@ function show(mode,o){
     else { j.append('To donate, email ',el('b',null,CONFIG.contactEmail),'.'); }
     p.append(j);
     para('Use the same email address as your account ('+me.email+') so the payment is matched to it.','small');
-    if(me.canTryPremium){
-      para('Not sure yet? Members with a paid membership can try Premium free for one week, once. Afterwards you go back to your own level; nothing is paused.');
-      const tb=el('button','btn ghost','Try Premium free for a week'); tb.type='button'; let armed=false;
-      tb.onclick=async()=>{
-        if(!armed){ armed=true; tb.textContent='Start my free Premium week now'; return; }
-        tb.disabled=true;
-        let r; try{ r=await sb.rpc('start_upgrade_trial',{p_level:'premium'}); }catch(err){ r={error:err}; }
-        if(r.error){ const m=String(r.error.message||''); tb.remove();
-          para(/AELAA_UPGRADE_USED/.test(m)?'This email has already had its free upgrade week.':'Couldn’t start the free week. Try again later.','err'); return; }
-        await check(curUser);
-      };
-      p.append(tb);
+    if(me.canAskPremium){
+      const q=el('p'); q.append('Not sure yet? Standard members can ask AELAA for one free Premium week. ');
+      const a=link('Ask AELAA for a free Premium week','mailto:'+CONFIG.contactEmail+'?subject='+encodeURIComponent('Free Premium week request')+'&body='+encodeURIComponent('Please start a free Premium week for my AELAA account: '+me.email));
+      q.append(a,'. Once it’s approved it starts right away, and afterwards you go back to Standard.'); p.append(q);
     }
     outBtn(); return;
   }
@@ -117,7 +110,7 @@ async function signOut(){ try{ await sb.auth.signOut(); }catch(e){} location.rel
 async function check(user){
   if(!user) return show('signin');
   const email=String(user.email||'').toLowerCase();
-  me={email}; curUser=user;
+  me={email};
   const res=await sb.from('members').select('email,paid_until,accred_until,role,level,suspended,trial_ends_at,upgrade_level,upgrade_ends_at,institution:institutions(name,level,paid_until,suspended)').eq('email',email).maybeSingle();
   if(res.error) return show('error',{err:'Couldn’t check your membership.'});
   if(!res.data) return show('notmember');
@@ -133,7 +126,8 @@ async function check(user){
     me.viaInstitution=me.instActive&&i.level==='premium'&&!(paid&&(me.level==='premium'||legacy));
     const own=(paid&&(me.level==='premium'||legacy))||me.viaInstitution;
     me.upgradeTrial=!own&&(paid||me.instActive)&&me.upgrade_level==='premium'&&me.upgrade_ends_at&&new Date(me.upgrade_ends_at)>new Date();
-    me.canTryPremium=!own&&(paid||me.instActive)&&!me.upgrade_ends_at;
+    const R={basic:1,standard:2,premium:3}, paidRank=Math.max(paid?R[me.level]||0:0, me.instActive?R[i.level]||0:0);
+    me.canAskPremium=paidRank===2&&!(me.upgrade_level==='premium'&&me.upgrade_ends_at);
     if(!own&&!me.upgradeTrial) return show('nodonation');
   }
   $('#gate').hidden=true;
