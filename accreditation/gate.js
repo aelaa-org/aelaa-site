@@ -1,7 +1,8 @@
 /* AELAA Accreditation gate: shared sign-in and access check for every page in the Accreditation area.
    Access = signed in + on the member list + not suspended + Premium membership ($500/year) paid
             through today or later (admins always pass). An earlier $500 Accreditation donation
-            with a current accred_until also counts, on top of a current membership.
+            with a current accred_until also counts, on top of a current membership. A seat at an
+            institution with a current Premium membership counts too.
    The database enforces the same rule (has_accreditation() in aelaa-setup/membership-levels.sql);
    this file only decides what the visitor sees.
 
@@ -75,8 +76,10 @@ function show(mode,o){
   if(mode==='suspended'){ h('Account suspended'); para('AELAA has suspended access for '+me.email+'. To find out why or to restore it, email '+CONFIG.contactEmail+'.'); outBtn(); return; }
   if(mode==='nodonation'){
     h('Premium membership needed');
-    const lvl={basic:'Basic',standard:'Standard'}[me.level];
-    const now=me.trial?'You are on the free trial, which covers the Grader and Oral Exams. ':lvl?'Your '+lvl+' membership doesn’t include Accreditation. ':'';
+    const lvl={basic:'Basic',standard:'Standard'}[me.level], inst=me.instActive&&me.institution;
+    const now=me.trial?'You are on the free trial, which covers the Grader and Oral Exams. '
+      :inst?'Your seat from '+inst.name+' is at the '+({basic:'Basic',standard:'Standard'}[inst.level]||inst.level)+' level, which doesn’t include Accreditation. Ask your institution’s AELAA manager about Premium seats, or get Premium on your own. '
+      :lvl?'Your '+lvl+' membership doesn’t include Accreditation. ':'';
     para(now+'The Accreditation area (Curriculum Mapping, CIR Report Builder and the AACSB Q&A Depository) is part of the Premium membership: '+CONFIG.premium+' a year, which also covers the AELAA Grader and Oral Exams. Access usually starts within a few minutes of paying.');
     const j=el('p');
     if(CONFIG.donateUrl){ const a=link('Get Premium ('+CONFIG.premium+'/year) on Zeffy',CONFIG.donateUrl); a.className='btn'; j.append(a); }
@@ -101,18 +104,20 @@ async function check(user){
   if(!user) return show('signin');
   const email=String(user.email||'').toLowerCase();
   me={email};
-  const res=await sb.from('members').select('email,paid_until,accred_until,role,level,suspended,trial_ends_at').eq('email',email).maybeSingle();
+  const res=await sb.from('members').select('email,paid_until,accred_until,role,level,suspended,trial_ends_at,institution:institutions(name,level,paid_until,suspended)').eq('email',email).maybeSingle();
   if(res.error) return show('error',{err:'Couldn’t check your membership.'});
   if(!res.data) return show('notmember');
   me=Object.assign({},res.data,{email});
   const t=todayISO();
   if(me.role!=='admin'){
     if(me.suspended) return show('suspended');
-    const paid=me.paid_until&&me.paid_until>=t;
-    me.trial=!paid&&me.trial_ends_at&&new Date(me.trial_ends_at)>new Date();
-    if(!paid&&!me.trial) return show('expired');
+    const paid=me.paid_until&&me.paid_until>=t, i=me.institution;
+    me.instActive=!!(i&&!i.suspended&&i.paid_until&&i.paid_until>=t);
+    me.trial=!paid&&!me.instActive&&me.trial_ends_at&&new Date(me.trial_ends_at)>new Date();
+    if(!paid&&!me.instActive&&!me.trial) return show('expired');
     const legacy=me.accred_until&&me.accred_until>=t;
-    if(!(paid&&(me.level==='premium'||legacy))) return show('nodonation');
+    me.viaInstitution=me.instActive&&i.level==='premium'&&!(paid&&(me.level==='premium'||legacy));
+    if(!(paid&&(me.level==='premium'||legacy))&&!me.viaInstitution) return show('nodonation');
   }
   $('#gate').hidden=true;
   try{ await opts.onReady(sb,me,{signOut}); }

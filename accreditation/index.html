@@ -85,6 +85,7 @@ AELAAGate.start({
     document.getElementById('acctEmail').textContent=me.email;
     document.getElementById('btnOut').onclick=api.signOut;
     document.getElementById('status').textContent= me.role==='admin' ? 'Signed in as an AELAA admin.'
+      : me.viaInstitution ? 'Your Premium seat comes from '+me.institution.name+', through '+fmt(me.institution.paid_until)+'.'
       : 'Your Premium membership runs through '+fmt(me.level==='premium'||!me.accred_until||me.accred_until>me.paid_until?me.paid_until:me.accred_until)+'.';
   }
 });
