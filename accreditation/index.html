@@ -85,6 +85,7 @@ AELAAGate.start({
     document.getElementById('acctEmail').textContent=me.email;
     document.getElementById('btnOut').onclick=api.signOut;
     document.getElementById('status').textContent= me.role==='admin' ? 'Signed in as an AELAA admin.'
+      : me.upgradeTrial ? 'You’re trying Premium free until '+new Date(me.upgrade_ends_at).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'})+'. To keep the Accreditation area afterwards, get Premium at aelaa.org with this email.'
       : me.viaInstitution ? 'Your Premium seat comes from '+me.institution.name+', through '+fmt(me.institution.paid_until)+'.'
       : 'Your Premium membership runs through '+fmt(me.level==='premium'||!me.accred_until||me.accred_until>me.paid_until?me.paid_until:me.accred_until)+'.';
   }
