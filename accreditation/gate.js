@@ -88,6 +88,7 @@ function show(mode,o){
     if(CONFIG.donateUrl){ const a=link('Get Premium ('+CONFIG.premium+'/year) on Zeffy',CONFIG.donateUrl); a.className='btn'; j.append(a); }
     else { j.append('To donate, email ',el('b',null,CONFIG.contactEmail),'.'); }
     p.append(j);
+    if(CONFIG.donateUrl){ const t=el('p'); t.append(el('b',null,'At checkout, Zeffy adds an optional tip for Zeffy itself (not AELAA); you can change the tip to $0 and pay only the membership fee.')); p.append(t); }
     para('Use the same email address as your account ('+me.email+') so the payment is matched to it.','small');
     if(me.canAskPremium){
       const q=el('p'); q.append('Not sure yet? Standard members can ask AELAA for one free Premium week. ');
