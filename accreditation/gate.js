@@ -37,6 +37,7 @@ function show(mode,o){
   const p=$('#panel'); p.replaceChildren();
   const h=t=>p.append(el('h1',null,t));
   const para=(t,c)=>{const x=el('p',c,t); p.append(x); return x;};
+  function copyText(t){ return (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{ const a=document.createElement('textarea'); a.value=t; a.setAttribute('readonly',''); a.style.cssText='position:fixed;opacity:0'; document.body.append(a); a.select(); const ok=document.execCommand('copy'); a.remove(); if(!ok) throw new Error('copy'); }); }
   const link=(text,href)=>{const a=el('a',null,text); a.href=href; return a;};
   const back=()=>{const b=el('button','linkbtn','Back to sign in'); b.type='button'; b.onclick=()=>show('signin'); p.append(b);};
   const outBtn=()=>{const b=el('button','btn ghost','Sign out'); b.type='button'; b.onclick=signOut; p.append(b);};
@@ -90,8 +91,26 @@ function show(mode,o){
     para('Use the same email address as your account ('+me.email+') so the payment is matched to it.','small');
     if(me.canAskPremium){
       const q=el('p'); q.append('Not sure yet? Standard members can ask AELAA for one free Premium week. ');
-      const a=link('Ask AELAA for a free Premium week','mailto:'+CONFIG.contactEmail+'?subject='+encodeURIComponent('Free Premium week request')+'&body='+encodeURIComponent('Please start a free Premium week for my AELAA account: '+me.email));
+      const subj='Free Premium week request', body='Please start a free Premium week for my AELAA account: '+me.email;
+      const to=encodeURIComponent(CONFIG.contactEmail), su=encodeURIComponent(subj), bo=encodeURIComponent(body);
+      const a=link('Ask AELAA for a free Premium week','mailto:'+CONFIG.contactEmail+'?subject='+su+'&body='+bo);
       q.append(a,'. Once it’s approved it starts right away, and afterwards you go back to Standard.'); p.append(q);
+      // A mailto: link does nothing on computers with no mail app set up, so clicking also shows
+      // the address and message, with Copy and webmail links.
+      const box=el('div','small'); box.hidden=true;
+      box.style.cssText='border:1px solid #ccc;border-radius:6px;padding:10px 12px;margin:0 0 14px';
+      const line=(label,text)=>{ const d=el('div'); d.append(el('b',null,label+' '),text); box.append(d); };
+      box.append(el('div',null,'If no email window opened, send this email yourself.'));
+      line('To:',CONFIG.contactEmail); line('Subject:',subj); line('Message:',body);
+      const row=el('div'); row.style.cssText='display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:8px';
+      const cp=el('button','linkbtn','Copy email'); cp.type='button'; cp.style.fontSize='14px';
+      cp.onclick=async()=>{ try{ await copyText('To: '+CONFIG.contactEmail+'\nSubject: '+subj+'\n\n'+body); cp.textContent='Copied'; }catch(e){ cp.textContent='Couldn’t copy: use the text above'; } };
+      row.append(cp);
+      [['Open in Gmail','https://mail.google.com/mail/?view=cm&fs=1&to='+to+'&su='+su+'&body='+bo],
+       ['Outlook','https://outlook.live.com/mail/0/deeplink/compose?to='+to+'&subject='+su+'&body='+bo],
+       ['Yahoo Mail','https://compose.mail.yahoo.com/?to='+to+'&subject='+su+'&body='+bo]].forEach(([t,h])=>{ const w=link(t+' ↗',h); w.target='_blank'; w.rel='noopener'; row.append(w); });
+      box.append(row); p.append(box);
+      a.addEventListener('click',()=>{ box.hidden=false; });
     }
     outBtn(); return;
   }
