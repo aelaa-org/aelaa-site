@@ -93,6 +93,10 @@ section.band{padding:72px 0;border-top:1px solid var(--line);scroll-margin-top:6
 .tier .price small{font:600 15px/1 var(--body);color:var(--muted)}
 .tier ul{margin:0;padding-left:20px;color:var(--muted);flex:1}
 .tier .btn{align-self:flex-start;margin-top:6px}
+.soon{align-self:flex-start;display:inline-block;vertical-align:middle;font:700 12px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:#8A5A00;background:#FFF3D6;border:1px solid #F0D28A;border-radius:999px;padding:5px 10px}
+li .soon{margin:4px 0 2px}
+.btn.disabled .soon{font-size:10.5px;padding:3px 7px}
+.btn.disabled{border-color:var(--line);background:#F3F5F9;color:#8A93A8;cursor:not-allowed}
 .trial{background:var(--mist);border-radius:10px;padding:18px 22px;margin-bottom:24px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .trial p{flex:1;min-width:260px}
 .tip-note{margin:0 0 18px;font-size:15px}
@@ -139,7 +143,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="actions">
           <a class="btn solid" href="#membership">Become a member</a>
           <a class="btn ghost" href="https://grader.aelaa.org">Open the AELAA Grader</a>
-          <a class="btn ghost" href="https://exam.aelaa.org">Open AELAA Oral Exams</a>
+          <span class="btn disabled" aria-disabled="true">AELAA Oral Exams <span class="soon">Coming soon</span></span>
         </div>
       </div>
       <div class="mark" aria-hidden="true"><img src="logo.png" alt=""></div>
@@ -177,7 +181,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         </ol>
         <div class="actions">
           <a class="btn solid" href="https://grader.aelaa.org">Open the AELAA Grader</a>
-          <a class="btn ghost" href="https://exam.aelaa.org">Open AELAA Oral Exams</a>
+          <span class="btn disabled" aria-disabled="true">AELAA Oral Exams <span class="soon">Coming soon</span></span>
         </div>
         <p class="note">Included in every AELAA membership, and free to try for one week. Sign in with the email on your membership. Answer sheets are read in your browser, so student names and scans never leave your computer.</p>
       </div>
@@ -200,7 +204,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <p>Membership is open to educators, assessment staff and accreditation coordinators. Choose the level that covers the tools you need. Every level is a yearly fee, paid securely through Zeffy, and includes a community of colleagues working on the same problems.</p>
       </div>
       <div class="trial">
-        <p><b>Try it free for one week.</b> New to AELAA? Create an account on the AELAA Grader or Oral Exams and use them free for seven days. Each email gets one trial. When the week ends, the account is paused until you pay for a membership with the same email.</p>
+        <p><b>Try it free for one week.</b> New to AELAA? Create an account on the AELAA Grader and use it free for seven days (AELAA Oral Exams <span class="soon">Coming soon</span>). Each email gets one trial. When the week ends, the account is paused until you pay for a membership with the same email.</p>
         <a class="btn ghost" href="https://grader.aelaa.org">Start your free week</a>
       </div>
       <p class="tip-note"><b>At checkout, Zeffy adds an optional tip for Zeffy itself (not AELAA); you can change the tip to $0 and pay only the membership fee.</b> All payments are final and non-refundable, so please use your free week to decide first (<a href="terms/#refunds">refund policy</a>).</p>
@@ -211,17 +215,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
           <ul><li>AELAA Grader</li></ul>
           <a class="btn ghost" href="https://www.zeffy.com/en-US/ticketing/alliance-of-educators-for-learning-assessment-and-accreditations-memberships">Join Basic</a>
         </div>
-        <div class="tier featured">
+        <div class="tier">
           <span class="eyebrow">Standard</span>
           <p class="price">$75 <small>/ year</small></p>
-          <ul><li>AELAA Grader</li><li>AELAA Oral Exams</li></ul>
-          <a class="btn solid" href="https://www.zeffy.com/en-US/ticketing/alliance-of-educators-for-learning-assessment-and-accreditations-memberships">Join Standard</a>
+          <ul><li>AELAA Grader</li><li><span class="soon">Coming soon</span><br>AELAA Oral Exams</li></ul>
+          <span class="btn disabled" aria-disabled="true">Join Standard</span>
         </div>
         <div class="tier">
           <span class="eyebrow">Premium</span>
           <p class="price">$500 <small>/ year</small></p>
-          <ul><li>AELAA Grader</li><li>AELAA Oral Exams</li><li><a href="accreditation/">Accreditation</a>: Curriculum Mapping, the CIR Report Builder and the AACSB Q&amp;A Depository</li></ul>
-          <a class="btn ghost" href="https://www.zeffy.com/en-US/donation-form/aelaa-accreditation">Join Premium</a>
+          <ul><li>AELAA Grader</li><li><span class="soon">Coming soon</span><br>AELAA Oral Exams</li><li><span class="soon">Coming soon</span><br><a href="accreditation/">Accreditation</a>: Curriculum Mapping, the CIR Report Builder and the AACSB Q&amp;A Depository</li></ul>
+          <span class="btn disabled" aria-disabled="true">Join Premium</span>
         </div>
       </div>
     </div>
@@ -240,7 +244,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="card">
         <span class="eyebrow">How it works</span>
         <h2>After you pay</h2>
-        <p>Create your account on the Grader or Oral Exams with the <b>same email address</b> you used on Zeffy, or keep using the account from your free week. Access starts within a few minutes and lasts one year. Renewing early at the same level adds a year to your current end date; moving up to a higher level starts a new year at that level right away.</p>
+        <p>Create your account on the Grader with the <b>same email address</b> you used on Zeffy, or keep using the account from your free week. Access starts within a few minutes and lasts one year. Renewing early at the same level adds a year to your current end date; moving up to a higher level starts a new year at that level right away.</p>
         <p style="font-size:14.5px">Questions? <a href="mailto:contactaelaa@gmail.com?subject=AELAA%20membership">contactaelaa@gmail.com</a></p>
       </div>
       <div class="card" id="contact">
@@ -257,7 +261,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <footer>
   <div class="wrap">
     <span>Copyright © 2026 Alliance of Educators for Learning, Assessment &amp; Accreditation. All rights reserved.</span>
-    <span><a href="https://grader.aelaa.org">AELAA Grader</a> · <a href="https://exam.aelaa.org">AELAA Oral Exams</a> · <a href="accreditation/">Accreditation</a> · <a href="terms/">Terms of Use</a></span>
+    <span><a href="https://grader.aelaa.org">AELAA Grader</a> · AELAA Oral Exams <span class="soon">Coming soon</span> · <a href="accreditation/">Accreditation</a> · <a href="terms/">Terms of Use</a></span>
   </div>
 </footer>
 </body>
