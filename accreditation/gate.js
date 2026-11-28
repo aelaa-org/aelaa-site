@@ -21,6 +21,8 @@ const CONFIG={
   // Where to pay for Premium. The "AELAA Accreditation" form on Zeffy: $500 there now buys the
   // Premium membership. If it is ever emptied, visitors are asked to email AELAA instead.
   donateUrl:'https://www.zeffy.com/en-US/donation-form/aelaa-accreditation',
+  // While Premium/Accreditation is still being developed: no payment link, a "Coming soon" note instead.
+  comingSoon:true,
   contactEmail:'contactaelaa@gmail.com',
   premium:'$500'
 };
@@ -80,9 +82,14 @@ function show(mode,o){
   if(mode==='nodonation'){
     h('Premium membership needed');
     const lvl={basic:'Basic',standard:'Standard'}[me.level], inst=me.instActive&&me.institution;
-    const now=me.trial?'You are on the free trial, which covers the Grader and Oral Exams. '
+    const now=me.trial?'You are on the free trial, which covers the Grader (Oral Exams coming soon). '
       :inst?'Your seat from '+inst.name+' is at the '+({basic:'Basic',standard:'Standard'}[inst.level]||inst.level)+' level, which doesn’t include Accreditation. Ask your institution’s AELAA manager about Premium seats, or get Premium on your own. '
       :lvl?'Your '+lvl+' membership doesn’t include Accreditation. ':'';
+    if(CONFIG.comingSoon){
+      para(now+'The Accreditation area (Curriculum Mapping, CIR Report Builder and the AACSB Q&A Depository) is part of the Premium membership, which is still being developed.');
+      const s=el('p'); s.append(el('b',null,'Coming soon. Premium isn’t open for purchase yet.')); p.append(s);
+      outBtn(); return;
+    }
     para(now+'The Accreditation area (Curriculum Mapping, CIR Report Builder and the AACSB Q&A Depository) is part of the Premium membership: '+CONFIG.premium+' a year, which also covers the AELAA Grader and Oral Exams. Access usually starts within a few minutes of paying.');
     const j=el('p');
     if(CONFIG.donateUrl){ const a=link('Get Premium ('+CONFIG.premium+'/year) on Zeffy',CONFIG.donateUrl); a.className='btn'; j.append(a); }
