@@ -1,0 +1,26 @@
+# Secrets: never commit
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+*secret*.txt
+*-key.txt
+*.pem
+*.key
+supabase/.temp/
+.supabase/
+
+# Source maps: never publish
+*.map
+
+# Local tooling
+node_modules/
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# Temporary upload staging
+_upload-tmp/
